@@ -1,0 +1,2575 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LLM Research Command Center | Dr. Shapiro's Psychiatry Excellence Hub</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:wght@400;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            /* New color scheme matching realtor command center */
+            --bg-darkest: #0c0f1a;
+            --bg-dark: #111827;
+            --bg-card: #1a1f35;
+            --bg-card-hover: #252b45;
+            --bg-sidebar: #0d1220;
+            --border-color: #2d3555;
+            --border-light: #3d4565;
+
+            /* Accent colors */
+            --accent-primary: #8b5cf6;
+            --accent-primary-light: #a78bfa;
+            --accent-secondary: #06b6d4;
+            --accent-teal: #14b8a6;
+            --accent-pink: #ec4899;
+            --accent-orange: #f97316;
+            --accent-yellow: #eab308;
+            --accent-green: #22c55e;
+            --accent-red: #ef4444;
+
+            /* Text colors */
+            --text-primary: #f8fafc;
+            --text-secondary: #94a3b8;
+            --text-muted: #64748b;
+
+            /* Gradients */
+            --gradient-primary: linear-gradient(135deg, #8b5cf6 0%, #06b6d4 100%);
+            --gradient-card: linear-gradient(135deg, #1a1f35 0%, #252b45 100%);
+            --gradient-glow: linear-gradient(135deg, rgba(139, 92, 246, 0.3) 0%, rgba(6, 182, 212, 0.3) 100%);
+
+            /* Shadows */
+            --shadow-glow: 0 0 40px rgba(139, 92, 246, 0.25);
+            --shadow-card: 0 4px 24px rgba(0, 0, 0, 0.4);
+
+            /* Sidebar width */
+            --sidebar-width: 280px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg-darkest);
+            color: var(--text-primary);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* Animated Background */
+        .bg-pattern {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background:
+                radial-gradient(ellipse at 20% 20%, rgba(139, 92, 246, 0.08) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 80%, rgba(6, 182, 212, 0.08) 0%, transparent 50%),
+                radial-gradient(ellipse at 50% 50%, rgba(236, 72, 153, 0.04) 0%, transparent 70%);
+        }
+
+        /* ============================================
+           SIDEBAR NAVIGATION
+           ============================================ */
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: var(--sidebar-width);
+            height: 100vh;
+            background: var(--bg-sidebar);
+            border-right: 1px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+            z-index: 100;
+            overflow-y: auto;
+        }
+
+        .sidebar-header {
+            padding: 24px 20px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo-icon {
+            width: 44px;
+            height: 44px;
+            background: var(--gradient-primary);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+            box-shadow: var(--shadow-glow);
+        }
+
+        .logo-text {
+            font-weight: 700;
+            font-size: 1rem;
+            line-height: 1.3;
+        }
+
+        .logo-subtitle {
+            font-size: 0.7rem;
+            color: var(--accent-secondary);
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* Sidebar Navigation Groups */
+        .nav-group {
+            padding: 16px 12px;
+        }
+
+        .nav-group-title {
+            font-size: 0.7rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            padding: 0 12px;
+            margin-bottom: 8px;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 16px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            margin-bottom: 4px;
+            color: var(--text-secondary);
+            text-decoration: none;
+            position: relative;
+        }
+
+        .nav-item:hover {
+            background: var(--bg-card);
+            color: var(--text-primary);
+        }
+
+        .nav-item.active {
+            background: var(--gradient-primary);
+            color: white;
+            box-shadow: 0 4px 15px rgba(139, 92, 246, 0.3);
+        }
+
+        .nav-item .icon {
+            width: 36px;
+            height: 36px;
+            background: var(--bg-card);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+            flex-shrink: 0;
+        }
+
+        .nav-item.active .icon {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .nav-item .label {
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        .nav-item .badge {
+            margin-left: auto;
+            padding: 2px 8px;
+            background: var(--accent-pink);
+            border-radius: 10px;
+            font-size: 0.7rem;
+            font-weight: 600;
+        }
+
+        .nav-item .badge.new {
+            background: var(--accent-green);
+        }
+
+        /* Progress in Sidebar */
+        .sidebar-progress {
+            padding: 20px;
+            margin: 12px;
+            background: var(--bg-card);
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+        }
+
+        .progress-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .progress-label {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+        }
+
+        .progress-value {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--accent-primary-light);
+        }
+
+        .progress-bar {
+            height: 8px;
+            background: var(--bg-darkest);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: var(--gradient-primary);
+            border-radius: 4px;
+            transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* XP Display in Sidebar */
+        .xp-display {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            padding: 16px;
+            margin: 12px;
+            background: linear-gradient(135deg, rgba(234, 179, 8, 0.15) 0%, rgba(249, 115, 22, 0.15) 100%);
+            border: 1px solid rgba(234, 179, 8, 0.3);
+            border-radius: 12px;
+        }
+
+        .xp-icon {
+            font-size: 1.5rem;
+        }
+
+        .xp-amount {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--accent-yellow);
+        }
+
+        /* User Profile */
+        .sidebar-footer {
+            margin-top: auto;
+            padding: 16px;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px;
+            background: var(--bg-card);
+            border-radius: 12px;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            background: var(--gradient-primary);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+
+        .user-info {
+            flex: 1;
+        }
+
+        .user-name {
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .user-role {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+
+        /* ============================================
+           MAIN CONTENT AREA
+           ============================================ */
+        .main-content {
+            margin-left: var(--sidebar-width);
+            min-height: 100vh;
+        }
+
+        /* Top Header Bar */
+        .top-header {
+            padding: 20px 40px;
+            background: rgba(13, 18, 32, 0.8);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 50;
+        }
+
+        .header-greeting h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.8rem;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .header-greeting p {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .header-stats {
+            display: flex;
+            gap: 24px;
+        }
+
+        .header-stat {
+            text-align: center;
+            padding: 12px 20px;
+            background: var(--bg-card);
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+        }
+
+        .header-stat-value {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--accent-primary-light);
+        }
+
+        .header-stat-label {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .online-indicator {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 16px;
+            background: rgba(34, 197, 94, 0.15);
+            border: 1px solid rgba(34, 197, 94, 0.3);
+            border-radius: 20px;
+            font-size: 0.85rem;
+            color: var(--accent-green);
+        }
+
+        .online-dot {
+            width: 8px;
+            height: 8px;
+            background: var(--accent-green);
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.5; transform: scale(1.2); }
+        }
+
+        /* Main Container */
+        .content-area {
+            padding: 40px;
+        }
+
+        /* Section Containers */
+        .section {
+            display: none;
+            animation: fadeIn 0.4s ease;
+        }
+
+        .section.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Dashboard Cards Grid */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 24px;
+            margin-bottom: 40px;
+        }
+
+        .stat-card {
+            background: var(--bg-card);
+            border-radius: 16px;
+            padding: 24px;
+            border: 1px solid var(--border-color);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: var(--gradient-primary);
+        }
+
+        .stat-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-glow);
+            border-color: var(--accent-primary);
+        }
+
+        .stat-card .icon-box {
+            width: 56px;
+            height: 56px;
+            background: var(--gradient-primary);
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            margin-bottom: 16px;
+        }
+
+        .stat-card h3 {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .stat-card .value {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .stat-card .subtext {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-top: 8px;
+        }
+
+        /* Section Headers */
+        .section-header {
+            margin-bottom: 32px;
+        }
+
+        .section-header h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            margin-bottom: 12px;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .section-header p {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+            max-width: 700px;
+            line-height: 1.7;
+        }
+
+        /* Phase Cards */
+        .phase-card {
+            background: var(--bg-card);
+            border-radius: 20px;
+            padding: 32px;
+            margin-bottom: 24px;
+            border: 1px solid var(--border-color);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .phase-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--gradient-primary);
+        }
+
+        .phase-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 14px;
+            background: rgba(139, 92, 246, 0.15);
+            border: 1px solid rgba(139, 92, 246, 0.3);
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--accent-primary-light);
+            margin-bottom: 16px;
+        }
+
+        .phase-card h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.6rem;
+            margin-bottom: 12px;
+        }
+
+        .phase-card > p {
+            color: var(--text-secondary);
+            font-size: 1rem;
+            line-height: 1.7;
+            margin-bottom: 24px;
+        }
+
+        /* Task Cards */
+        .tasks-container {
+            display: grid;
+            gap: 20px;
+        }
+
+        .task-card {
+            background: var(--bg-card-hover);
+            border-radius: 16px;
+            border: 2px solid var(--border-color);
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .task-card:hover {
+            border-color: var(--accent-primary);
+            box-shadow: 0 8px 30px rgba(139, 92, 246, 0.2);
+        }
+
+        .task-card.completed {
+            border-color: var(--accent-green);
+            opacity: 0.9;
+        }
+
+        .task-header {
+            padding: 24px 24px 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+        }
+
+        .task-step {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .step-number {
+            width: 48px;
+            height: 48px;
+            background: var(--gradient-primary);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 700;
+            font-size: 1.2rem;
+        }
+
+        .task-card.completed .step-number {
+            background: var(--accent-green);
+        }
+
+        .task-xp {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 14px;
+            background: rgba(234, 179, 8, 0.15);
+            border-radius: 20px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.85rem;
+            color: var(--accent-yellow);
+        }
+
+        .task-body {
+            padding: 20px 24px;
+        }
+
+        .task-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 12px;
+        }
+
+        .task-description {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        /* Expandable Details */
+        .task-details {
+            display: none;
+            padding: 24px;
+            background: var(--bg-dark);
+            border-radius: 12px;
+            margin-bottom: 16px;
+        }
+
+        .task-details.expanded {
+            display: block;
+            animation: slideDown 0.3s ease;
+        }
+
+        @keyframes slideDown {
+            from { opacity: 0; max-height: 0; }
+            to { opacity: 1; max-height: 2000px; }
+        }
+
+        .detail-section {
+            margin-bottom: 24px;
+        }
+
+        .detail-section:last-child {
+            margin-bottom: 0;
+        }
+
+        .detail-label {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 600;
+            color: var(--accent-secondary);
+            margin-bottom: 16px;
+            font-size: 0.95rem;
+        }
+
+        .baby-steps {
+            list-style: none;
+            counter-reset: step;
+        }
+
+        .baby-steps li {
+            position: relative;
+            padding-left: 40px;
+            margin-bottom: 16px;
+            line-height: 1.6;
+            font-size: 0.95rem;
+        }
+
+        .baby-steps li::before {
+            counter-increment: step;
+            content: counter(step);
+            position: absolute;
+            left: 0;
+            top: 2px;
+            width: 28px;
+            height: 28px;
+            background: var(--accent-primary);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .pro-tip {
+            background: rgba(234, 179, 8, 0.1);
+            border-left: 4px solid var(--accent-yellow);
+            padding: 16px 20px;
+            border-radius: 0 12px 12px 0;
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        .pro-tip strong {
+            color: var(--accent-yellow);
+        }
+
+        .warning-box {
+            background: rgba(239, 68, 68, 0.1);
+            border-left: 4px solid var(--accent-red);
+            padding: 16px 20px;
+            border-radius: 0 12px 12px 0;
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        .warning-box strong {
+            color: var(--accent-red);
+        }
+
+        .code-block {
+            background: #0d1117;
+            border-radius: 12px;
+            padding: 20px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.85rem;
+            overflow-x: auto;
+            border: 1px solid #30363d;
+            line-height: 1.6;
+        }
+
+        .code-block code {
+            color: #e6edf3;
+        }
+
+        /* Task Actions */
+        .task-actions {
+            padding: 0 24px 24px;
+            display: flex;
+            gap: 12px;
+        }
+
+        .btn {
+            padding: 14px 24px;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-primary {
+            background: var(--gradient-primary);
+            color: white;
+            flex: 1;
+        }
+
+        .btn-primary:hover {
+            transform: scale(1.02);
+            box-shadow: 0 8px 25px rgba(139, 92, 246, 0.4);
+        }
+
+        .btn-secondary {
+            background: var(--bg-card);
+            color: var(--text-primary);
+            border: 1px solid var(--border-color);
+        }
+
+        .btn-secondary:hover {
+            background: var(--bg-card-hover);
+            border-color: var(--accent-primary);
+        }
+
+        .btn-complete {
+            background: var(--accent-green);
+            color: white;
+        }
+
+        /* Info Cards */
+        .info-card {
+            background: var(--bg-card);
+            border-radius: 16px;
+            padding: 28px;
+            border: 1px solid var(--border-color);
+            margin-bottom: 24px;
+        }
+
+        .info-card h4 {
+            font-size: 1.1rem;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .info-card p {
+            color: var(--text-secondary);
+            line-height: 1.7;
+            margin-bottom: 16px;
+        }
+
+        .info-card p:last-child {
+            margin-bottom: 0;
+        }
+
+        /* Data Tables */
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+
+        .data-table th,
+        .data-table td {
+            padding: 14px 16px;
+            text-align: left;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .data-table th {
+            background: var(--bg-dark);
+            font-weight: 600;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--text-secondary);
+        }
+
+        .data-table td {
+            font-size: 0.95rem;
+        }
+
+        .data-table tr:hover td {
+            background: var(--bg-card-hover);
+        }
+
+        .accuracy-high {
+            color: var(--accent-green);
+            font-weight: 600;
+        }
+
+        .accuracy-medium {
+            color: var(--accent-yellow);
+            font-weight: 600;
+        }
+
+        /* Quick Reference Grid */
+        .ref-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .ref-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 16px;
+            padding: 20px;
+            background: var(--bg-card-hover);
+            border-radius: 14px;
+            transition: all 0.3s;
+            border: 1px solid transparent;
+        }
+
+        .ref-item:hover {
+            transform: translateX(4px);
+            border-color: var(--accent-primary);
+        }
+
+        .ref-icon {
+            width: 52px;
+            height: 52px;
+            background: var(--gradient-primary);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.4rem;
+            flex-shrink: 0;
+        }
+
+        .ref-text h4 {
+            font-size: 1rem;
+            margin-bottom: 6px;
+        }
+
+        .ref-text p {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+        }
+
+        /* Celebration Modal */
+        .celebration-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .celebration-modal.show {
+            display: flex;
+            animation: fadeIn 0.3s;
+        }
+
+        .celebration-content {
+            background: var(--bg-card);
+            border-radius: 24px;
+            padding: 50px;
+            text-align: center;
+            max-width: 500px;
+            border: 2px solid var(--accent-yellow);
+            box-shadow: 0 0 80px rgba(234, 179, 8, 0.3);
+            animation: bounceIn 0.5s;
+        }
+
+        @keyframes bounceIn {
+            0% { transform: scale(0.5); opacity: 0; }
+            70% { transform: scale(1.05); }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        .celebration-icon {
+            font-size: 5rem;
+            margin-bottom: 24px;
+            animation: celebratePulse 1s infinite;
+        }
+
+        @keyframes celebratePulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.15); }
+        }
+
+        .celebration-content h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            margin-bottom: 16px;
+            background: linear-gradient(135deg, var(--accent-yellow) 0%, var(--accent-orange) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .celebration-content p {
+            color: var(--text-secondary);
+            margin-bottom: 28px;
+            line-height: 1.6;
+        }
+
+        .xp-earned {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 16px 32px;
+            background: rgba(234, 179, 8, 0.15);
+            border-radius: 30px;
+            margin-bottom: 28px;
+        }
+
+        .xp-earned span {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: var(--accent-yellow);
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .sidebar {
+                transform: translateX(-100%);
+                transition: transform 0.3s ease;
+            }
+
+            .sidebar.open {
+                transform: translateX(0);
+            }
+
+            .main-content {
+                margin-left: 0;
+            }
+
+            .mobile-toggle {
+                display: flex;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .top-header {
+                flex-direction: column;
+                gap: 20px;
+                padding: 20px;
+            }
+
+            .header-stats {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            .content-area {
+                padding: 20px;
+            }
+
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .ref-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-pattern"></div>
+
+    <!-- Sidebar Navigation -->
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <div class="logo">
+                <div class="logo-icon">🧠</div>
+                <div>
+                    <div class="logo-text">LLM Research Center</div>
+                    <div class="logo-subtitle">Dr. Shapiro's Hub</div>
+                </div>
+            </div>
+        </div>
+
+        <nav class="nav-group">
+            <div class="nav-group-title">Command Center</div>
+            <a href="#" class="nav-item active" data-section="dashboard">
+                <div class="icon">📊</div>
+                <span class="label">Dashboard</span>
+            </a>
+            <a href="#" class="nav-item" data-section="llm-selection">
+                <div class="icon">🤖</div>
+                <span class="label">LLM Selection Guide</span>
+                <span class="badge new">NEW</span>
+            </a>
+        </nav>
+
+        <nav class="nav-group">
+            <div class="nav-group-title">Research Phases</div>
+            <a href="#" class="nav-item" data-section="phase1">
+                <div class="icon">🔬</div>
+                <span class="label">Phase 1: Research</span>
+            </a>
+            <a href="#" class="nav-item" data-section="phase2">
+                <div class="icon">🎨</div>
+                <span class="label">Phase 2: Presentations</span>
+            </a>
+            <a href="#" class="nav-item" data-section="phase3">
+                <div class="icon">🌐</div>
+                <span class="label">Phase 3: Website</span>
+            </a>
+        </nav>
+
+        <nav class="nav-group">
+            <div class="nav-group-title">Multimedia Training</div>
+            <a href="#" class="nav-item" data-section="multimedia">
+                <div class="icon">🎬</div>
+                <span class="label">Multimedia Features</span>
+                <span class="badge new">NEW</span>
+            </a>
+            <a href="#" class="nav-item" data-section="tools">
+                <div class="icon">🛠️</div>
+                <span class="label">Tools & Resources</span>
+            </a>
+        </nav>
+
+        <div class="sidebar-progress">
+            <div class="progress-header">
+                <span class="progress-label">Overall Progress</span>
+                <span class="progress-value" id="progressPercent">0%</span>
+            </div>
+            <div class="progress-bar">
+                <div class="progress-fill" id="overallProgress" style="width: 0%"></div>
+            </div>
+        </div>
+
+        <div class="xp-display">
+            <span class="xp-icon">⭐</span>
+            <span class="xp-amount" id="totalXp">0 XP</span>
+        </div>
+
+        <div class="sidebar-footer">
+            <div class="user-profile">
+                <div class="user-avatar">AS</div>
+                <div class="user-info">
+                    <div class="user-name">Dr. Arnold Shapiro</div>
+                    <div class="user-role">Board-Certified Psychiatrist</div>
+                </div>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Main Content Area -->
+    <main class="main-content">
+        <!-- Top Header Bar -->
+        <header class="top-header">
+            <div class="header-greeting">
+                <h1>Good morning, Dr. Shapiro! 👋</h1>
+                <p>Your journey to the best psychiatry website on the planet</p>
+            </div>
+            <div class="header-stats">
+                <div class="header-stat">
+                    <div class="header-stat-value" id="tasksCompleted">0</div>
+                    <div class="header-stat-label">Tasks Done</div>
+                </div>
+                <div class="header-stat">
+                    <div class="header-stat-value">15</div>
+                    <div class="header-stat-label">Total Tasks</div>
+                </div>
+                <div class="online-indicator">
+                    <div class="online-dot"></div>
+                    <span>System Ready</span>
+                </div>
+            </div>
+        </header>
+
+        <div class="content-area">
+            <!-- DASHBOARD SECTION -->
+            <section class="section active" id="dashboard">
+                <div class="section-header">
+                    <h2>Command Center Dashboard</h2>
+                    <p>Track your progress as you build the most accurate, comprehensive psychiatric information website. Each phase builds on the last to create something unprecedented.</p>
+                </div>
+
+                <div class="dashboard-grid">
+                    <div class="stat-card">
+                        <div class="icon-box">🔬</div>
+                        <h3>Research Phase</h3>
+                        <div class="value" id="phase1Status">0/5</div>
+                        <div class="subtext">Perplexity + Claude Setup</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="icon-box">🎨</div>
+                        <h3>Presentation Phase</h3>
+                        <div class="value" id="phase2Status">0/5</div>
+                        <div class="subtext">Gamma Multimedia Creation</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="icon-box">🌐</div>
+                        <h3>Website Phase</h3>
+                        <div class="value" id="phase3Status">0/5</div>
+                        <div class="subtext">Emergent + Netlify Deploy</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="icon-box">🎯</div>
+                        <h3>Accuracy Target</h3>
+                        <div class="value">97%+</div>
+                        <div class="subtext">With Expert Verification</div>
+                    </div>
+                </div>
+
+                <!-- Quick Start Cards -->
+                <div class="phase-card">
+                    <div class="phase-badge">🚀 QUICK START</div>
+                    <h3>Your Research-to-Website Workflow</h3>
+                    <p>This system combines the most accurate AI research tools with beautiful presentation software to create content that educates patients and establishes your expertise. Here's the high-level flow:</p>
+
+                    <div class="ref-grid" style="margin-top: 24px;">
+                        <div class="ref-item">
+                            <div class="ref-icon">1️⃣</div>
+                            <div class="ref-text">
+                                <h4>Research with Perplexity Deep Research</h4>
+                                <p>Use Claude Sonnet 4.5 to get cited, verified psychiatric treatment information from peer-reviewed sources.</p>
+                            </div>
+                        </div>
+                        <div class="ref-item">
+                            <div class="ref-icon">2️⃣</div>
+                            <div class="ref-text">
+                                <h4>Verify with Your Expertise</h4>
+                                <p>Your 40+ years of clinical experience is the essential quality control layer that no AI can replace.</p>
+                            </div>
+                        </div>
+                        <div class="ref-item">
+                            <div class="ref-icon">3️⃣</div>
+                            <div class="ref-text">
+                                <h4>Create with Gamma</h4>
+                                <p>Transform verified research into beautiful, interactive presentations that embed seamlessly on your website.</p>
+                            </div>
+                        </div>
+                        <div class="ref-item">
+                            <div class="ref-icon">4️⃣</div>
+                            <div class="ref-text">
+                                <h4>Deploy to Your Website</h4>
+                                <p>Embed protected content on your Emergent/Netlify site where patients can access it but not easily steal it.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- LLM SELECTION GUIDE SECTION -->
+            <section class="section" id="llm-selection">
+                <div class="section-header">
+                    <h2>Why Claude Sonnet 4.5 + Perplexity is the Best Choice</h2>
+                    <p>This section provides the scientific evidence and reasoning behind our recommended LLM configuration. Understanding the "why" helps you trust the system and make adjustments when needed.</p>
+                </div>
+
+                <div class="info-card">
+                    <h4>🔬 The Scientific Evidence</h4>
+                    <p>Multiple peer-reviewed studies from 2024-2025 have evaluated LLM performance specifically for psychiatric applications. Here's what the research conclusively shows:</p>
+
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Model</th>
+                                <th>Diagnostic Accuracy</th>
+                                <th>Treatment Planning</th>
+                                <th>Best Use Case</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Gemini 3 Pro</strong></td>
+                                <td class="accuracy-high">97.4% (MIMIC-IV)</td>
+                                <td>Strong, multimodal</td>
+                                <td>Complex diagnostic reasoning</td>
+                            </tr>
+                            <tr>
+                                <td><strong>GPT-5.2 / GPT-4.1</strong></td>
+                                <td class="accuracy-high">85-100% (varies)</td>
+                                <td>Excellent guidelines adherence</td>
+                                <td>Bipolar, depression treatment</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Claude Opus 4.5</strong></td>
+                                <td class="accuracy-high">84-97%</td>
+                                <td>Superior for algorithms</td>
+                                <td>Treatment-resistant protocols</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Claude Sonnet 4.5</strong></td>
+                                <td class="accuracy-high">Similar to Opus</td>
+                                <td>Fast, excellent coding</td>
+                                <td>Technical documentation</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Grok 4.1</strong></td>
+                                <td class="accuracy-medium">Comparable</td>
+                                <td>Real-time data access</td>
+                                <td>Latest research, breaking news</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="info-card">
+                    <h4>📚 Key Research Citations</h4>
+                    <p><strong>Perlis et al. (2025):</strong> Guideline-augmented LLMs showed high consistency with experts for bipolar depression, significantly outperforming community clinicians in treatment recommendations.</p>
+                    <p><strong>PMC Study (July 2025):</strong> For depression and PTSD, ChatGPT-4 achieved higher diagnostic accuracy than human professionals. However, for complex cases like early schizophrenia, accuracy dropped to 55%—highlighting why your expert verification is essential.</p>
+                    <p><strong>JMIR Meta-Analysis (April 2025):</strong> Gemini 2.5 achieved 97.4% diagnostic hit rate in the MIMIC-IV benchmark, significantly outperforming GPT-4.1 and Claude-4 Opus in pure diagnostic tasks.</p>
+                </div>
+
+                <div class="phase-card">
+                    <div class="phase-badge">🏆 THE RECOMMENDATION</div>
+                    <h3>Why Claude Sonnet 4.5 Wins for Your Use Case</h3>
+                    <p>While Gemini leads in pure diagnostic accuracy, your primary need is <strong>treatment algorithm documentation</strong>—and Claude Sonnet 4.5 excels here for several specific reasons:</p>
+
+                    <div class="detail-section" style="margin-top: 20px;">
+                        <ol class="baby-steps">
+                            <li><strong>Superior Structured Output:</strong> Claude produces cleaner, more organized treatment algorithms with clear hierarchies (first-line → second-line → treatment-resistant → emerging therapies).</li>
+                            <li><strong>Reasoning Toggle:</strong> The "reasoning" option in Perplexity enables deeper analysis for complex treatment-resistant cases—exactly what your website will focus on.</li>
+                            <li><strong>Clinical Guideline Adherence:</strong> Claude excels at following established psychiatric guidelines (APA, CANMAT, NICE) while noting where evidence is evolving.</li>
+                            <li><strong>Balanced Hedging:</strong> Claude appropriately acknowledges uncertainty without being overly cautious or overly confident—critical for medical content.</li>
+                            <li><strong>Citation Integration:</strong> When used through Perplexity, Claude seamlessly incorporates the citation layer, making source verification straightforward.</li>
+                        </ol>
+                    </div>
+
+                    <div class="pro-tip" style="margin-top: 20px;">
+                        <strong>💡 Why Not Just Use Gemini?</strong> Gemini 3 Pro's 97.4% accuracy is for diagnostic tasks (identifying conditions). Your website focuses on treatment recommendations, where Claude's structured reasoning and guideline adherence are more valuable than raw diagnostic accuracy.
+                    </div>
+                </div>
+
+                <div class="info-card">
+                    <h4>⚠️ Critical Limitation: No AI Achieves 100% Accuracy</h4>
+                    <p>Even the best LLM configuration cannot replace your clinical expertise. Current peer-reviewed studies show 85-97% accuracy depending on condition complexity. The remaining 3-15% gap is where your 40+ years of experience becomes irreplaceable.</p>
+                    <p><strong>Your Role:</strong> Review all AI-generated content before publishing. If something "doesn't sound right" based on your clinical experience, trust your instincts and verify the source directly.</p>
+                </div>
+
+                <div class="phase-card">
+                    <div class="phase-badge">🔧 PERPLEXITY CONFIGURATION</div>
+                    <h3>Why Perplexity as the Research Layer</h3>
+                    <p>Your instinct to use Perplexity as the search/research layer is scientifically sound. Here's why this approach works better than going directly to any single LLM:</p>
+
+                    <div class="ref-grid" style="margin-top: 24px;">
+                        <div class="ref-item">
+                            <div class="ref-icon">📎</div>
+                            <div class="ref-text">
+                                <h4>Citation Transparency</h4>
+                                <p>Perplexity always shows linked references so you can verify every claim back to peer-reviewed literature.</p>
+                            </div>
+                        </div>
+                        <div class="ref-item">
+                            <div class="ref-icon">🌐</div>
+                            <div class="ref-text">
+                                <h4>Real-Time Web Access</h4>
+                                <p>Unlike static LLMs, Perplexity accesses the latest published research, FDA updates, and clinical guidelines as they're published.</p>
+                            </div>
+                        </div>
+                        <div class="ref-item">
+                            <div class="ref-icon">🎯</div>
+                            <div class="ref-text">
+                                <h4>Scientific Source Filtering</h4>
+                                <p>When you select "Academic" or enable Deep Research, Perplexity prioritizes peer-reviewed journals and PubMed over general web content.</p>
+                            </div>
+                        </div>
+                        <div class="ref-item">
+                            <div class="ref-icon">⚡</div>
+                            <div class="ref-text">
+                                <h4>Model Selection Control</h4>
+                                <p>You can manually select Claude Sonnet 4.5 to ensure consistent, high-quality reasoning across all queries.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- PHASE 1: RESEARCH SETUP -->
+            <section class="section" id="phase1">
+                <div class="section-header">
+                    <h2>Phase 1: Research Collection with Perplexity Deep Research</h2>
+                    <p>This is the foundation of everything. You'll set up the most accurate AI research system currently available for medical literature: Perplexity Pro with Claude Sonnet 4.5 and Deep Research enabled.</p>
+                </div>
+
+                <div class="tasks-container">
+                    <!-- Task 1-1 -->
+                    <div class="task-card" data-task="1-1" data-xp="75">
+                        <div class="task-header">
+                            <div class="task-step">
+                                <div class="step-number">1</div>
+                            </div>
+                            <div class="task-xp">⭐ +75 XP</div>
+                        </div>
+                        <div class="task-body">
+                            <h3 class="task-title">Create Your Perplexity Pro Account</h3>
+                            <p class="task-description">Perplexity Pro ($20/month) is the research engine that shows citations for every claim, allowing you to verify sources. This is non-negotiable for medical accuracy.</p>
+
+                            <div class="task-details" id="details-1-1">
+                                <div class="detail-section">
+                                    <div class="detail-label">📋 Step-by-Step Instructions</div>
+                                    <ol class="baby-steps">
+                                        <li>Open your web browser and navigate to <strong>perplexity.ai</strong></li>
+                                        <li>Click the <strong>"Sign Up"</strong> button in the top right corner of the page</li>
+                                        <li>Create an account using your professional email address (recommended for credibility)</li>
+                                        <li>After account creation, look for <strong>"Upgrade to Pro"</strong> or find it in your account Settings</li>
+                                        <li>Subscribe to the Pro plan at $20/month—this unlocks unlimited Pro Searches and Deep Research queries</li>
+                                        <li>Verify your subscription is active by checking for a "Pro" badge next to your profile</li>
+                                    </ol>
+                                </div>
+
+                                <div class="detail-section">
+                                    <div class="detail-label">🎯 What You Get with Pro</div>
+                                    <ol class="baby-steps">
+                                        <li><strong>Unlimited Pro Searches:</strong> Standard searches with AI synthesis and citations</li>
+                                        <li><strong>Deep Research:</strong> Comprehensive multi-step research that takes 2-5 minutes but produces thorough reports</li>
+                                        <li><strong>Model Selection:</strong> Choose between Claude, GPT, Gemini, and other models</li>
+                                        <li><strong>File Uploads:</strong> Upload PDFs and documents for AI analysis</li>
+                                        <li><strong>API Access:</strong> For advanced integrations (not needed for your workflow)</li>
+                                    </ol>
+                                </div>
+
+                                <div class="pro-tip">
+                                    <strong>💡 Pro Tip:</strong> Perplexity Pro is essential—not optional—for medical research. The free tier limits you to basic searches without the Deep Research capability that produces comprehensive, citation-rich reports.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="task-actions">
+                            <button class="btn btn-secondary" onclick="toggleDetails('1-1')">📖 Show Detailed Steps</button>
+                            <button class="btn btn-primary" onclick="completeTask('1-1')">✓ Mark Complete</button>
+                        </div>
+                    </div>
+
+                    <!-- Task 1-2 -->
+                    <div class="task-card" data-task="1-2" data-xp="100">
+                        <div class="task-header">
+                            <div class="task-step">
+                                <div class="step-number">2</div>
+                            </div>
+                            <div class="task-xp">⭐ +100 XP</div>
+                        </div>
+                        <div class="task-body">
+                            <h3 class="task-title">Configure Claude Sonnet 4.5 as Your Default Model</h3>
+                            <p class="task-description">Select Claude Sonnet 4.5 as your reasoning model—the optimal choice for structured psychiatric treatment algorithms based on current benchmark data.</p>
+
+                            <div class="task-details" id="details-1-2">
+                                <div class="detail-section">
+                                    <div class="detail-label">📋 Step-by-Step Instructions</div>
+                                    <ol class="baby-steps">
+                                        <li>In Perplexity, click your <strong>profile icon</strong> (usually in the bottom left corner)</li>
+                                        <li>Select <strong>"Settings"</strong> from the dropdown menu</li>
+                                        <li>Navigate to the <strong>"AI Model"</strong> or <strong>"Default Model"</strong> section</li>
+                                        <li>From the model dropdown, select <strong>"Claude Sonnet 4.5"</strong></li>
+                                        <li>IMPORTANT: Enable the <strong>"Reasoning"</strong> toggle to ON—this activates extended thinking for complex queries</li>
+                                        <li>Save your settings and return to the main search interface</li>
+                                    </ol>
+                                </div>
+
+                                <div class="detail-section">
+                                    <div class="detail-label">🧠 Why Claude Sonnet 4.5 Specifically</div>
+                                    <ol class="baby-steps">
+                                        <li><strong>Treatment Algorithm Excellence:</strong> Claude excels at creating step-by-step treatment protocols with clear decision trees</li>
+                                        <li><strong>Reasoning Mode:</strong> The reasoning toggle enables "extended thinking"—the model shows its work for complex clinical scenarios</li>
+                                        <li><strong>Balanced Confidence:</strong> Claude appropriately hedges uncertainty without being overly cautious</li>
+                                        <li><strong>Speed:</strong> Sonnet is faster than Opus while maintaining nearly identical quality for your use case</li>
+                                    </ol>
+                                </div>
+
+                                <div class="warning-box">
+                                    <strong>⚠️ Important:</strong> The reasoning toggle significantly improves output quality for treatment-resistant conditions but increases response time. For simple factual queries, you can disable it to get faster responses.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="task-actions">
+                            <button class="btn btn-secondary" onclick="toggleDetails('1-2')">📖 Show Detailed Steps</button>
+                            <button class="btn btn-primary" onclick="completeTask('1-2')">✓ Mark Complete</button>
+                        </div>
+                    </div>
+
+                    <!-- Task 1-3 -->
+                    <div class="task-card" data-task="1-3" data-xp="150">
+                        <div class="task-header">
+                            <div class="task-step">
+                                <div class="step-number">3</div>
+                            </div>
+                            <div class="task-xp">⭐ +150 XP</div>
+                        </div>
+                        <div class="task-body">
+                            <h3 class="task-title">Master Deep Research: Your First Comprehensive Query</h3>
+                            <p class="task-description">Execute a real psychiatric research query to see the full power of Perplexity Deep Research with Claude. This is where you'll experience the citation-rich output that makes this system unique.</p>
+
+                            <div class="task-details" id="details-1-3">
+                                <div class="detail-section">
+                                    <div class="detail-label">📋 Step-by-Step Instructions</div>
+                                    <ol class="baby-steps">
+                                        <li>Start a <strong>new conversation</strong> in Perplexity (don't continue an existing thread)</li>
+                                        <li>Before typing your query, click the <strong>"Deep Research"</strong> toggle to enable it—this is crucial</li>
+                                        <li>In the source filter dropdown, select <strong>"Academic"</strong> or <strong>"Scientific Sources"</strong> to prioritize peer-reviewed literature</li>
+                                        <li>Copy and paste the example query below into the search box</li>
+                                        <li>Click submit and <strong>wait 2-5 minutes</strong>—Deep Research takes time because it's doing comprehensive analysis</li>
+                                        <li>Review the results, paying special attention to the numbered citations</li>
+                                    </ol>
+                                </div>
+
+                                <div class="detail-section">
+                                    <div class="detail-label">📝 Example Query for Treatment-Resistant Bipolar</div>
+                                    <div class="code-block">
+                                        <code>"What are the current evidence-based treatment algorithms for treatment-resistant bipolar depression, including medication combinations, augmentation strategies, heroic dosing approaches, and newer FDA-approved options? Include both adult and pediatric considerations where applicable. Cite only peer-reviewed sources from 2023-2025, prioritizing meta-analyses and randomized controlled trials."</code>
+                                    </div>
+                                </div>
+
+                                <div class="detail-section">
+                                    <div class="detail-label">🔍 How to Verify the Results</div>
+                                    <ol class="baby-steps">
+                                        <li><strong>Check each citation:</strong> Click on the numbered references to verify the source actually exists and says what the AI claims</li>
+                                        <li><strong>Cross-reference with your knowledge:</strong> Does the treatment hierarchy match current clinical guidelines you know?</li>
+                                        <li><strong>Look for red flags:</strong> Outdated medications, discontinued drugs, or dosing that seems off</li>
+                                        <li><strong>Note any gaps:</strong> Are there treatment options you know about that weren't mentioned?</li>
+                                    </ol>
+                                </div>
+
+                                <div class="pro-tip">
+                                    <strong>💡 Expert Verification is Essential:</strong> No LLM achieves 100% accuracy. Your 40+ years of clinical experience is the irreplaceable quality control layer. When something "doesn't sound right," trust your instincts and verify directly.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="task-actions">
+                            <button class="btn btn-secondary" onclick="toggleDetails('1-3')">📖 Show Detailed Steps</button>
+                            <button class="btn btn-primary" onclick="completeTask('1-3')">✓ Mark Complete</button>
+                        </div>
+                    </div>
+
+                    <!-- Task 1-4 -->
+                    <div class="task-card" data-task="1-4" data-xp="100">
+                        <div class="task-header">
+                            <div class="task-step">
+                                <div class="step-number">4</div>
+                            </div>
+                            <div class="task-xp">⭐ +100 XP</div>
+                        </div>
+                        <div class="task-body">
+                            <h3 class="task-title">Create Your Research Organization System</h3>
+                            <p class="task-description">Set up a folder structure and documentation system to organize your verified research. This ensures you can easily find and update content as new evidence emerges.</p>
+
+                            <div class="task-details" id="details-1-4">
+                                <div class="detail-section">
+                                    <div class="detail-label">📋 Recommended Folder Structure</div>
+                                    <div class="code-block">
+                                        <code>Website Content/
+├── Adult Psychiatry/
+│   ├── Depression/
+│   │   ├── Treatment-Resistant-Depression-2025.docx
+│   │   └── TRD-Algorithm-Sources.txt
+│   ├── Bipolar/
+│   │   ├── Bipolar-I-Treatment-2025.docx
+│   │   ├── Bipolar-II-Treatment-2025.docx
+│   │   └── Treatment-Resistant-Bipolar-2025.docx
+│   ├── Anxiety/
+│   ├── ADHD/
+│   └── Schizophrenia/
+├── Child Psychiatry/
+│   ├── Pediatric-Depression/
+│   ├── Pediatric-ADHD/
+│   └── Pediatric-Anxiety/
+├── Presentations/ (Gamma exports)
+└── Source-Verification-Log.xlsx</code>
+                                    </div>
+                                </div>
+
+                                <div class="detail-section">
+                                    <div class="detail-label">📋 Step-by-Step Setup</div>
+                                    <ol class="baby-steps">
+                                        <li>Create a main folder called <strong>"Website Content"</strong> on your desktop or in your documents</li>
+                                        <li>Create subfolders for each major category (Adult Psychiatry, Child Psychiatry, etc.)</li>
+                                        <li>Within each category, create condition-specific folders</li>
+                                        <li>For each research document, include the year in the filename for easy version tracking</li>
+                                        <li>Create a <strong>Source-Verification-Log</strong> spreadsheet to track which citations you've personally verified</li>
+                                    </ol>
+                                </div>
+
+                                <div class="pro-tip">
+                                    <strong>💡 Quarterly Updates:</strong> Psychiatry treatment guidelines evolve. Plan to review and update each document quarterly, especially for treatment-resistant conditions where new options emerge frequently.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="task-actions">
+                            <button class="btn btn-secondary" onclick="toggleDetails('1-4')">📖 Show Detailed Steps</button>
+                            <button class="btn btn-primary" onclick="completeTask('1-4')">✓ Mark Complete</button>
+                        </div>
+                    </div>
+
+                    <!-- Task 1-5 -->
+                    <div class="task-card" data-task="1-5" data-xp="125">
+                        <div class="task-header">
+                            <div class="task-step">
+                                <div class="step-number">5</div>
+                            </div>
+                            <div class="task-xp">⭐ +125 XP</div>
+                        </div>
+                        <div class="task-body">
+                            <h3 class="task-title">Complete Your First Verified Research Document</h3>
+                            <p class="task-description">Export your Deep Research results, add your expert annotations, and save a publication-ready document that will become the foundation for your website content.</p>
+
+                            <div class="task-details" id="details-1-5">
+                                <div class="detail-section">
+                                    <div class="detail-label">📋 Step-by-Step Instructions</div>
+                                    <ol class="baby-steps">
+                                        <li>In Perplexity, locate the <strong>"Copy"</strong> or <strong>"Export"</strong> button for your Deep Research results</li>
+                                        <li>Paste the content into a new Word document or Google Doc</li>
+                                        <li>Add a header with: Topic, Date Created, Sources Verified (Yes/No), Your Notes</li>
+                                        <li>Go through each citation and mark whether you've verified it</li>
+                                        <li>Add your clinical annotations in a different color (e.g., blue for your expert additions)</li>
+                                        <li>Organize the content into sections: Overview → First-Line → Second-Line → Treatment-Resistant → Emerging Therapies</li>
+                                        <li>Save the document in your organized folder structure with the year in the filename</li>
+                                    </ol>
+                                </div>
+
+                                <div class="detail-section">
+                                    <div class="detail-label">📝 Document Template Header</div>
+                                    <div class="code-block">
+                                        <code>====================================
+TREATMENT ALGORITHM DOCUMENT
+====================================
+Topic: [e.g., Treatment-Resistant Bipolar Depression]
+Created: [Date]
+Last Updated: [Date]
+Sources Verified: [Yes/Partial/No]
+Perplexity Query Used: [Paste your query]
+Expert Review By: Dr. Arnold Shapiro, MD
+
+CLINICAL NOTES:
+[Your expert annotations and corrections go here]
+
+====================================</code>
+                                    </div>
+                                </div>
+
+                                <div class="pro-tip">
+                                    <strong>💡 Your Annotations Add Value:</strong> The AI provides the research synthesis, but YOUR clinical notes are what make this content unique. Add real-world observations, patient response patterns you've seen, and practical tips that aren't in the literature.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="task-actions">
+                            <button class="btn btn-secondary" onclick="toggleDetails('1-5')">📖 Show Detailed Steps</button>
+                            <button class="btn btn-primary" onclick="completeTask('1-5')">✓ Mark Complete</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- PHASE 2: PRESENTATIONS -->
+            <section class="section" id="phase2">
+                <div class="section-header">
+                    <h2>Phase 2: Create Beautiful Multimedia with Gamma</h2>
+                    <p>Transform your verified research into stunning, interactive presentations using Gamma—the AI presentation tool that creates web-native content that cannot be easily downloaded or stolen.</p>
+                </div>
+
+                <div class="tasks-container">
+                    <!-- Task 2-1 -->
+                    <div class="task-card" data-task="2-1" data-xp="75">
+                        <div class="task-header">
+                            <div class="task-step">
+                                <div class="step-number">1</div>
+                            </div>
+                            <div class="task-xp">⭐ +75 XP</div>
+                        </div>
+                        <div class="task-body">
+                            <h3 class="task-title">Set Up Your Gamma Account</h3>
+                            <p class="task-description">Gamma is the AI presentation tool that creates gorgeous, web-native presentations. Unlike PowerPoint, Gamma embeds display as interactive web content—not downloadable files.</p>
+
+                            <div class="task-details" id="details-2-1">
+                                <div class="detail-section">
+                                    <div class="detail-label">📋 Step-by-Step Instructions</div>
+                                    <ol class="baby-steps">
+                                        <li>Open your browser and go to <strong>gamma.app</strong></li>
+                                        <li>Click <strong>"Sign Up"</strong> and create your account (Google sign-in is fastest)</li>
+                                        <li>You'll receive <strong>400 free AI credits</strong> to start</li>
+                                        <li>Take the quick interactive tour to understand the interface</li>
+                                        <li>Explore the template gallery to see what's possible</li>
+                                        <li>Optional: Upgrade to Plus ($10/mo) or Pro ($20/mo) for unlimited AI credits</li>
+                                    </ol>
+                                </div>
+
+                                <div class="detail-section">
+                                    <div class="detail-label">🎯 Why Gamma Over PowerPoint</div>
+                                    <ol class="baby-steps">
+                                        <li><strong>Web-Native:</strong> Presentations embed directly on your website without downloading files</li>
+                                        <li><strong>Content Protection:</strong> No "Save as PowerPoint" option for viewers</li>
+                                        <li><strong>Always Updated:</strong> Edit once, and all embedded versions update automatically</li>
+                                        <li><strong>Interactive:</strong> Embed videos, charts, Figma designs, and live content</li>
+                                        <li><strong>AI-Powered:</strong> Describe what you want, and Gamma creates beautiful slides instantly</li>
+                                    </ol>
+                                </div>
+
+                                <div class="pro-tip">
+                                    <strong>💡 Free Tier is Generous:</strong> You can create several presentations with the free 400 credits. Only upgrade to Pro once you've used up credits and confirmed Gamma fits your workflow.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="task-actions">
+                            <button class="btn btn-secondary" onclick="toggleDetails('2-1')">📖 Show Detailed Steps</button>
+                            <button class="btn btn-primary" onclick="completeTask('2-1')">✓ Mark Complete</button>
+                        </div>
+                    </div>
+
+                    <!-- Task 2-2 -->
+                    <div class="task-card" data-task="2-2" data-xp="100">
+                        <div class="task-header">
+                            <div class="task-step">
+                                <div class="step-number">2</div>
+                            </div>
+                            <div class="task-xp">⭐ +100 XP</div>
+                        </div>
+                        <div class="task-body">
+                            <h3 class="task-title">Create Your First AI-Generated Presentation</h3>
+                            <p class="task-description">Transform your verified Perplexity research into a beautiful, patient-friendly presentation using Gamma's AI generation.</p>
+
+                            <div class="task-details" id="details-2-2">
+                                <div class="detail-section">
+                                    <div class="detail-label">📋 Step-by-Step Instructions</div>
+                                    <ol class="baby-steps">
+                                        <li>In Gamma, click <strong>"Create new"</strong> then select <strong>"Generate"</strong></li>
+                                        <li>Choose <strong>"Presentation"</strong> as the format</li>
+                                        <li>In the text box, paste your verified research from Phase 1</li>
+                                        <li>Add a prompt instruction like the example below</li>
+                                        <li>Select a visual theme that matches your practice branding</li>
+                                        <li>Click <strong>"Generate"</strong> and wait 30-60 seconds</li>
+                                        <li>Review the generated "cards" (Gamma's term for slides)</li>
+                                    </ol>
+                                </div>
+
+                                <div class="detail-section">
+                                    <div class="detail-label">📝 Example Prompt for Medical Presentations</div>
+                                    <div class="code-block">
+                                        <code>"Create a professional medical presentation about treatment-resistant bipolar depression for patient education. Use clear language that patients can understand, avoid unnecessary medical jargon, and include visual explanations where helpful. Make it warm and approachable while maintaining clinical accuracy. Include sections for: overview, treatment options, what to expect, and when to seek help."</code>
+                                    </div>
+                                </div>
+
+                                <div class="detail-section">
+                                    <div class="detail-label">🔧 How to Refine Your Presentation</div>
+                                    <ol class="baby-steps">
+                                        <li><strong>Edit individual cards:</strong> Click any card and use "Edit with AI" to refine specific sections</li>
+                                        <li><strong>Add your expertise:</strong> Manually add clinical pearls and real-world insights</li>
+                                        <li><strong>Change visuals:</strong> Replace AI images with your own or from Gamma's library</li>
+                                        <li><strong>Reorder cards:</strong> Drag and drop to optimize the flow</li>
+                                        <li><strong>Add multimedia:</strong> Embed YouTube videos, charts, or interactive elements</li>
+                                    </ol>
+                                </div>
+
+                                <div class="pro-tip">
+                                    <strong>💡 Patient-Friendly Language:</strong> Your website is for patients, not colleagues. Ask Gamma to "explain like I'm talking to a patient" to get more accessible language, then add clinical depth where appropriate.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="task-actions">
+                            <button class="btn btn-secondary" onclick="toggleDetails('2-2')">📖 Show Detailed Steps</button>
+                            <button class="btn btn-primary" onclick="completeTask('2-2')">✓ Mark Complete</button>
+                        </div>
+                    </div>
+
+                    <!-- Task 2-3 -->
+                    <div class="task-card" data-task="2-3" data-xp="150">
+                        <div class="task-header">
+                            <div class="task-step">
+                                <div class="step-number">3</div>
+                            </div>
+                            <div class="task-xp">⭐ +150 XP</div>
+                        </div>
+                        <div class="task-body">
+                            <h3 class="task-title">Master Advanced Gamma Features</h3>
+                            <p class="task-description">Learn to add interactive elements, embed external content, and create truly engaging multimedia experiences that set your website apart.</p>
+
+                            <div class="task-details" id="details-2-3">
+                                <div class="detail-section">
+                                    <div class="detail-label">🎬 Interactive Elements You Can Add</div>
+                                    <ol class="baby-steps">
+                                        <li><strong>YouTube Videos:</strong> Paste any YouTube URL to embed educational videos</li>
+                                        <li><strong>Charts & Graphs:</strong> Create data visualizations for treatment response rates</li>
+                                        <li><strong>Accordions:</strong> Expandable sections for detailed medication information</li>
+                                        <li><strong>Buttons:</strong> Link to external resources or other pages on your site</li>
+                                        <li><strong>Figma Embeds:</strong> Include interactive diagrams or flowcharts</li>
+                                        <li><strong>PDF Viewers:</strong> Embed downloadable resources without leaving the presentation</li>
+                                    </ol>
+                                </div>
+
+                                <div class="detail-section">
+                                    <div class="detail-label">📋 How to Add Interactive Elements</div>
+                                    <ol class="baby-steps">
+                                        <li>Click on a card where you want to add the element</li>
+                                        <li>Type <strong>"/"</strong> (forward slash) to open the insert menu</li>
+                                        <li>Browse categories: Media, Embeds, Layout, etc.</li>
+                                        <li>Select the element type (e.g., "YouTube" or "Chart")</li>
+                                        <li>Paste the URL or configure the element</li>
+                                        <li>Resize and position as needed</li>
+                                    </ol>
+                                </div>
+
+                                <div class="pro-tip">
+                                    <strong>💡 Treatment Algorithm Flowcharts:</strong> Use Figma (free) to create interactive treatment decision trees, then embed them in Gamma. Patients can follow the logic of how you make treatment decisions.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="task-actions">
+                            <button class="btn btn-secondary" onclick="toggleDetails('2-3')">📖 Show Detailed Steps</button>
+                            <button class="btn btn-primary" onclick="completeTask('2-3')">✓ Mark Complete</button>
+                        </div>
+                    </div>
+
+                    <!-- Task 2-4 -->
+                    <div class="task-card" data-task="2-4" data-xp="100">
+                        <div class="task-header">
+                            <div class="task-step">
+                                <div class="step-number">4</div>
+                            </div>
+                            <div class="task-xp">⭐ +100 XP</div>
+                        </div>
+                        <div class="task-body">
+                            <h3 class="task-title">Configure Sharing & Protection Settings</h3>
+                            <p class="task-description">Set up proper sharing permissions to protect your content while making it accessible to website visitors.</p>
+
+                            <div class="task-details" id="details-2-4">
+                                <div class="detail-section">
+                                    <div class="detail-label">📋 Step-by-Step Instructions</div>
+                                    <ol class="baby-steps">
+                                        <li>Click the <strong>"Share"</strong> button on your finished presentation</li>
+                                        <li>Set access to <strong>"Anyone with the link"</strong></li>
+                                        <li>Under permissions, select <strong>"Can view"</strong> (not edit)</li>
+                                        <li>Disable the <strong>"Allow downloading"</strong> option if available</li>
+                                        <li>Enable <strong>"Show on profile"</strong> if you want it discoverable</li>
+                                        <li>Click <strong>"Embed"</strong> to get the iframe code</li>
+                                        <li>Copy and save the embed code for Phase 3</li>
+                                    </ol>
+                                </div>
+
+                                <div class="detail-section">
+                                    <div class="detail-label">🛡️ Content Protection Reality Check</div>
+                                    <ol class="baby-steps">
+                                        <li><strong>What's Protected:</strong> Your content displays as web content, not downloadable files</li>
+                                        <li><strong>Basic Deterrent:</strong> Right-click protection on images (stops casual copying)</li>
+                                        <li><strong>No PowerPoint Export:</strong> Viewers can't "Save as" and edit your work</li>
+                                        <li><strong>The Reality:</strong> Determined users can screenshot anything visible on screen</li>
+                                        <li><strong>Best Protection:</strong> Regularly update content so copies become outdated quickly</li>
+                                    </ol>
+                                </div>
+
+                                <div class="warning-box">
+                                    <strong>⚠️ No Content is 100% Protected:</strong> Any content visible in a browser can be screenshotted or screen-recorded. Gamma makes it harder, but not impossible. Your best protection is providing such high-quality, frequently-updated content that copying old versions isn't valuable.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="task-actions">
+                            <button class="btn btn-secondary" onclick="toggleDetails('2-4')">📖 Show Detailed Steps</button>
+                            <button class="btn btn-primary" onclick="completeTask('2-4')">✓ Mark Complete</button>
+                        </div>
+                    </div>
+
+                    <!-- Task 2-5 -->
+                    <div class="task-card" data-task="2-5" data-xp="125">
+                        <div class="task-header">
+                            <div class="task-step">
+                                <div class="step-number">5</div>
+                            </div>
+                            <div class="task-xp">⭐ +125 XP</div>
+                        </div>
+                        <div class="task-body">
+                            <h3 class="task-title">Create Audio Content with NotebookLM</h3>
+                            <p class="task-description">Use Google's NotebookLM to create engaging "Deep Dive" audio podcasts that explain complex psychiatric topics in a conversational format.</p>
+
+                            <div class="task-details" id="details-2-5">
+                                <div class="detail-section">
+                                    <div class="detail-label">📋 Step-by-Step Instructions</div>
+                                    <ol class="baby-steps">
+                                        <li>Go to <strong>notebooklm.google.com</strong> and sign in with your Google account</li>
+                                        <li>Click <strong>"New Notebook"</strong> to create a new project</li>
+                                        <li>Upload your verified research document as a source</li>
+                                        <li>Add multiple sources for a richer audio discussion</li>
+                                        <li>Click <strong>"Audio Overview"</strong> or <strong>"Generate Deep Dive"</strong></li>
+                                        <li>Wait 2-5 minutes for the AI to create a podcast-style audio discussion</li>
+                                        <li>Download the MP3 file for embedding on your website</li>
+                                    </ol>
+                                </div>
+
+                                <div class="detail-section">
+                                    <div class="detail-label">🎙️ Why NotebookLM for Audio</div>
+                                    <ol class="baby-steps">
+                                        <li><strong>Conversational Format:</strong> Two AI hosts discuss your content naturally</li>
+                                        <li><strong>Patient-Friendly:</strong> Complex topics explained in accessible language</li>
+                                        <li><strong>Engagement:</strong> Audio content reaches people who prefer listening over reading</li>
+                                        <li><strong>Free:</strong> No cost for generating audio (part of Google AI Pro)</li>
+                                        <li><strong>Unique Content:</strong> Creates audio that's hard to find elsewhere</li>
+                                    </ol>
+                                </div>
+
+                                <div class="pro-tip">
+                                    <strong>💡 Embed Audio Players:</strong> You can embed the downloaded MP3 as an audio player on your website, or link to it from your Gamma presentations. Patients can listen while commuting or exercising.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="task-actions">
+                            <button class="btn btn-secondary" onclick="toggleDetails('2-5')">📖 Show Detailed Steps</button>
+                            <button class="btn btn-primary" onclick="completeTask('2-5')">✓ Mark Complete</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- PHASE 3: WEBSITE INTEGRATION -->
+            <section class="section" id="phase3">
+                <div class="section-header">
+                    <h2>Phase 3: Embed on Your Website</h2>
+                    <p>The final step: integrate your Gamma presentations and audio content into your Emergent AI/Netlify website. This is where everything comes together to create the best psychiatry information website on the planet.</p>
+                </div>
+
+                <div class="tasks-container">
+                    <!-- Task 3-1 -->
+                    <div class="task-card" data-task="3-1" data-xp="100">
+                        <div class="task-header">
+                            <div class="task-step">
+                                <div class="step-number">1</div>
+                            </div>
+                            <div class="task-xp">⭐ +100 XP</div>
+                        </div>
+                        <div class="task-body">
+                            <h3 class="task-title">Prepare Your Embed Codes</h3>
+                            <p class="task-description">Gather all your embed codes and organize them for website integration. This preparation step ensures smooth deployment.</p>
+
+                            <div class="task-details" id="details-3-1">
+                                <div class="detail-section">
+                                    <div class="detail-label">📋 What to Collect</div>
+                                    <ol class="baby-steps">
+                                        <li><strong>Gamma Embed Code:</strong> The iframe code from each presentation you want to embed</li>
+                                        <li><strong>Audio Files:</strong> MP3 files from NotebookLM (or links if hosted elsewhere)</li>
+                                        <li><strong>YouTube Links:</strong> Any educational videos you want to embed</li>
+                                        <li><strong>Image Assets:</strong> Your practice logo, headshot, and any custom graphics</li>
+                                    </ol>
+                                </div>
+
+                                <div class="detail-section">
+                                    <div class="detail-label">📝 Standard Gamma Embed Code Format</div>
+                                    <div class="code-block">
+                                        <code>&lt;iframe
+  src="https://gamma.app/embed/YOUR-PRESENTATION-ID"
+  style="width: 100%; min-height: 600px; border: none; border-radius: 12px;"
+  allow="fullscreen"
+&gt;&lt;/iframe&gt;</code>
+                                    </div>
+                                </div>
+
+                                <div class="detail-section">
+                                    <div class="detail-label">📋 Organization Checklist</div>
+                                    <ol class="baby-steps">
+                                        <li>Create a document listing all embed codes with labels</li>
+                                        <li>Test each Gamma link to ensure it loads correctly</li>
+                                        <li>Note which page each presentation should appear on</li>
+                                        <li>Decide on embed dimensions for each page layout</li>
+                                    </ol>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="task-actions">
+                            <button class="btn btn-secondary" onclick="toggleDetails('3-1')">📖 Show Detailed Steps</button>
+                            <button class="btn btn-primary" onclick="completeTask('3-1')">✓ Mark Complete</button>
+                        </div>
+                    </div>
+
+                    <!-- Task 3-2 -->
+                    <div class="task-card" data-task="3-2" data-xp="125">
+                        <div class="task-header">
+                            <div class="task-step">
+                                <div class="step-number">2</div>
+                            </div>
+                            <div class="task-xp">⭐ +125 XP</div>
+                        </div>
+                        <div class="task-body">
+                            <h3 class="task-title">Add Embeds to Emergent AI</h3>
+                            <p class="task-description">Create page sections in Emergent AI to host your embedded presentations and multimedia content.</p>
+
+                            <div class="task-details" id="details-3-2">
+                                <div class="detail-section">
+                                    <div class="detail-label">📋 Step-by-Step Instructions</div>
+                                    <ol class="baby-steps">
+                                        <li>Open your website project in <strong>Emergent AI</strong></li>
+                                        <li>Navigate to the page where you want to add the presentation</li>
+                                        <li>Look for an <strong>"HTML"</strong> or <strong>"Embed"</strong> or <strong>"Custom Code"</strong> block option</li>
+                                        <li>Add this block to your page in the desired location</li>
+                                        <li>Paste your Gamma iframe code into the block</li>
+                                        <li>Adjust the styling: set width to <strong>100%</strong> and height to <strong>600-800px</strong> depending on content</li>
+                                        <li>Add a heading above the embed explaining what the presentation covers</li>
+                                        <li>Save your changes</li>
+                                    </ol>
+                                </div>
+
+                                <div class="detail-section">
+                                    <div class="detail-label">🎨 Layout Best Practices</div>
+                                    <ol class="baby-steps">
+                                        <li><strong>Full-Width Sections:</strong> Give presentations their own full-width section for maximum impact</li>
+                                        <li><strong>Descriptive Headers:</strong> Add context before each embed so visitors know what they'll learn</li>
+                                        <li><strong>Related Content:</strong> Group related presentations on topic pages (e.g., all bipolar content together)</li>
+                                        <li><strong>Mobile Responsive:</strong> Test how embeds look on mobile devices</li>
+                                    </ol>
+                                </div>
+
+                                <div class="pro-tip">
+                                    <strong>💡 Page Organization:</strong> Consider creating dedicated pages for each major condition (Depression, Bipolar, Anxiety, etc.) with multiple presentations per page. This creates a comprehensive resource library.
+                                </pro>
+                            </div>
+                        </div>
+                        <div class="task-actions">
+                            <button class="btn btn-secondary" onclick="toggleDetails('3-2')">📖 Show Detailed Steps</button>
+                            <button class="btn btn-primary" onclick="completeTask('3-2')">✓ Mark Complete</button>
+                        </div>
+                    </div>
+
+                    <!-- Task 3-3 -->
+                    <div class="task-card" data-task="3-3" data-xp="150">
+                        <div class="task-header">
+                            <div class="task-step">
+                                <div class="step-number">3</div>
+                            </div>
+                            <div class="task-xp">⭐ +150 XP</div>
+                        </div>
+                        <div class="task-body">
+                            <h3 class="task-title">Deploy to Netlify</h3>
+                            <p class="task-description">Push your changes to GitHub and deploy via Netlify to see your multimedia content live on the internet.</p>
+
+                            <div class="task-details" id="details-3-3">
+                                <div class="detail-section">
+                                    <div class="detail-label">📋 Step-by-Step Instructions</div>
+                                    <ol class="baby-steps">
+                                        <li>In Emergent AI, click <strong>"Save"</strong> to save all your changes</li>
+                                        <li>Look for a <strong>"Deploy"</strong> or <strong>"Publish"</strong> button (Emergent may auto-push to GitHub)</li>
+                                        <li>If manual: commit your changes with a message like "Add bipolar treatment presentations"</li>
+                                        <li>Go to your <strong>Netlify dashboard</strong> (netlify.com)</li>
+                                        <li>Check that a new deploy has started (you'll see it in the deploys list)</li>
+                                        <li>Wait for the deploy to complete—look for a <strong>green checkmark</strong></li>
+                                        <li>Click your site URL to view the live version</li>
+                                    </ol>
+                                </div>
+
+                                <div class="warning-box">
+                                    <strong>⚠️ CRITICAL - Test on LIVE Site, Not Preview:</strong> Remember your learned lesson! Preview environments have restrictions that don't exist in production. Embeds that fail in preview often work perfectly on the deployed site. Always test on your actual Netlify URL.
+                                </div>
+
+                                <div class="detail-section">
+                                    <div class="detail-label">🔍 What to Test After Deployment</div>
+                                    <ol class="baby-steps">
+                                        <li>Does each Gamma presentation load correctly?</li>
+                                        <li>Can you navigate through all slides?</li>
+                                        <li>Do interactive elements (videos, accordions) work?</li>
+                                        <li>Does the page look good on mobile?</li>
+                                        <li>Are audio players functional?</li>
+                                    </ol>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="task-actions">
+                            <button class="btn btn-secondary" onclick="toggleDetails('3-3')">📖 Show Detailed Steps</button>
+                            <button class="btn btn-primary" onclick="completeTask('3-3')">✓ Mark Complete</button>
+                        </div>
+                    </div>
+
+                    <!-- Task 3-4 -->
+                    <div class="task-card" data-task="3-4" data-xp="100">
+                        <div class="task-header">
+                            <div class="task-step">
+                                <div class="step-number">4</div>
+                            </div>
+                            <div class="task-xp">⭐ +100 XP</div>
+                        </div>
+                        <div class="task-body">
+                            <h3 class="task-title">Mobile Optimization & Cross-Browser Testing</h3>
+                            <p class="task-description">Ensure your multimedia content looks great and functions properly on all devices and browsers.</p>
+
+                            <div class="task-details" id="details-3-4">
+                                <div class="detail-section">
+                                    <div class="detail-label">📋 Testing Checklist</div>
+                                    <ol class="baby-steps">
+                                        <li><strong>Desktop Browsers:</strong> Test in Chrome, Firefox, Safari, and Edge</li>
+                                        <li><strong>Mobile Devices:</strong> Test on your iPhone/Android phone</li>
+                                        <li><strong>Tablet:</strong> If you have an iPad or tablet, test there too</li>
+                                        <li><strong>Different Screen Sizes:</strong> Use browser dev tools to simulate various widths</li>
+                                        <li><strong>Loading Speed:</strong> Check if presentations load within 3-5 seconds</li>
+                                    </ol>
+                                </div>
+
+                                <div class="detail-section">
+                                    <div class="detail-label">🔧 Common Issues & Fixes</div>
+                                    <ol class="baby-steps">
+                                        <li><strong>Embed Too Tall:</strong> Reduce the iframe height for mobile (400px works well)</li>
+                                        <li><strong>Horizontal Scrolling:</strong> Ensure iframe width is set to 100%, not a fixed pixel value</li>
+                                        <li><strong>Text Too Small:</strong> Add padding around embeds so content doesn't touch screen edges</li>
+                                        <li><strong>Slow Loading:</strong> Consider lazy-loading embeds below the fold</li>
+                                    </ol>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="task-actions">
+                            <button class="btn btn-secondary" onclick="toggleDetails('3-4')">📖 Show Detailed Steps</button>
+                            <button class="btn btn-primary" onclick="completeTask('3-4')">✓ Mark Complete</button>
+                        </div>
+                    </div>
+
+                    <!-- Task 3-5 -->
+                    <div class="task-card" data-task="3-5" data-xp="175">
+                        <div class="task-header">
+                            <div class="task-step">
+                                <div class="step-number">5</div>
+                            </div>
+                            <div class="task-xp">⭐ +175 XP</div>
+                        </div>
+                        <div class="task-body">
+                            <h3 class="task-title">Launch & Celebrate! 🎉</h3>
+                            <p class="task-description">Final verification, share with trusted reviewers, and celebrate building something unprecedented in psychiatry education.</p>
+
+                            <div class="task-details" id="details-3-5">
+                                <div class="detail-section">
+                                    <div class="detail-label">📋 Final Launch Checklist</div>
+                                    <ol class="baby-steps">
+                                        <li>View your complete live site from start to finish</li>
+                                        <li>Click through every presentation to ensure they load</li>
+                                        <li>Test all interactive elements (videos, buttons, accordions)</li>
+                                        <li>Verify audio players work correctly</li>
+                                        <li>Check that navigation between pages is smooth</li>
+                                        <li>Right-click on content to verify download protection is working</li>
+                                    </ol>
+                                </div>
+
+                                <div class="detail-section">
+                                    <div class="detail-label">👥 Get Feedback</div>
+                                    <ol class="baby-steps">
+                                        <li>Share the link with Lori for initial feedback</li>
+                                        <li>Ask a trusted colleague to review for clinical accuracy</li>
+                                        <li>Have a patient (or patient proxy) test for understandability</li>
+                                        <li>Note any confusion points for future improvements</li>
+                                    </ol>
+                                </div>
+
+                                <div class="pro-tip">
+                                    <strong>🏆 YOU DID IT!</strong> You now have a research-to-website workflow that most medical professionals don't know exists. Your site combines AI-verified research, beautiful multimedia, and your irreplaceable 40+ years of expertise. This IS the best psychiatry information website on the planet.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="task-actions">
+                            <button class="btn btn-secondary" onclick="toggleDetails('3-5')">📖 Show Detailed Steps</button>
+                            <button class="btn btn-primary" onclick="completeTask('3-5')">🎉 Complete Journey!</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- MULTIMEDIA FEATURES TRAINING -->
+            <section class="section" id="multimedia">
+                <div class="section-header">
+                    <h2>Comprehensive Multimedia Features Guide</h2>
+                    <p>A complete training on all the multimedia features you should add to make your website the most informative psychiatry resource on the planet. Each feature serves a specific purpose in patient education and engagement.</p>
+                </div>
+
+                <div class="info-card">
+                    <h4>🎯 Why Multimedia Matters for Medical Education</h4>
+                    <p>Research shows that patients retain information better when presented through multiple formats. A combination of text, visuals, audio, and interactive elements dramatically improves understanding and compliance. Your website should leverage all of these to become a comprehensive resource.</p>
+                </div>
+
+                <div class="phase-card">
+                    <div class="phase-badge">🎬 VISUAL CONTENT</div>
+                    <h3>Presentations & Slideshows (Gamma)</h3>
+                    <p>Interactive presentations are the cornerstone of patient education. They break complex topics into digestible chunks and guide patients through information step-by-step.</p>
+
+                    <div class="ref-grid" style="margin-top: 24px;">
+                        <div class="ref-item">
+                            <div class="ref-icon">📊</div>
+                            <div class="ref-text">
+                                <h4>Treatment Overviews</h4>
+                                <p>High-level presentations explaining what a condition is, treatment options, and what to expect. Perfect for newly diagnosed patients.</p>
+                            </div>
+                        </div>
+                        <div class="ref-item">
+                            <div class="ref-icon">🔄</div>
+                            <div class="ref-text">
+                                <h4>Medication Guides</h4>
+                                <p>Detailed presentations for each medication class: how they work, common side effects, what to report, and timeline for improvement.</p>
+                            </div>
+                        </div>
+                        <div class="ref-item">
+                            <div class="ref-icon">🎯</div>
+                            <div class="ref-text">
+                                <h4>Decision Trees</h4>
+                                <p>Interactive flowcharts showing how treatment decisions are made. Helps patients understand why you're recommending specific approaches.</p>
+                            </div>
+                        </div>
+                        <div class="ref-item">
+                            <div class="ref-icon">📈</div>
+                            <div class="ref-text">
+                                <h4>Progress Tracking</h4>
+                                <p>Visual guides for patients to understand what improvement looks like over time, setting realistic expectations.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="phase-card">
+                    <div class="phase-badge">🎙️ AUDIO CONTENT</div>
+                    <h3>Podcasts & Audio Explanations (NotebookLM)</h3>
+                    <p>Audio content reaches patients during commutes, exercise, or when they can't read screens. It feels personal and accessible.</p>
+
+                    <div class="ref-grid" style="margin-top: 24px;">
+                        <div class="ref-item">
+                            <div class="ref-icon">🎧</div>
+                            <div class="ref-text">
+                                <h4>Deep Dive Episodes</h4>
+                                <p>15-30 minute audio discussions explaining conditions in depth. NotebookLM creates conversational, engaging content automatically.</p>
+                            </div>
+                        </div>
+                        <div class="ref-item">
+                            <div class="ref-icon">⏱️</div>
+                            <div class="ref-text">
+                                <h4>Quick Explainers</h4>
+                                <p>3-5 minute audio clips answering common patient questions. Easy to listen to while waiting or between tasks.</p>
+                            </div>
+                        </div>
+                        <div class="ref-item">
+                            <div class="ref-icon">📱</div>
+                            <div class="ref-text">
+                                <h4>Appointment Prep</h4>
+                                <p>Audio guides patients can listen to before appointments to prepare questions and understand what to expect.</p>
+                            </div>
+                        </div>
+                        <div class="ref-item">
+                            <div class="ref-icon">🌙</div>
+                            <div class="ref-text">
+                                <h4>Relaxation & Coping</h4>
+                                <p>Guided audio for anxiety management, sleep hygiene instructions, or mindfulness exercises.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="phase-card">
+                    <div class="phase-badge">🎥 VIDEO CONTENT</div>
+                    <h3>Educational Videos (YouTube Embeds & Custom)</h3>
+                    <p>Video combines visual and audio learning for maximum retention. You can embed existing educational videos or create your own.</p>
+
+                    <div class="ref-grid" style="margin-top: 24px;">
+                        <div class="ref-item">
+                            <div class="ref-icon">🎬</div>
+                            <div class="ref-text">
+                                <h4>Curated YouTube Playlists</h4>
+                                <p>Embed high-quality educational videos from reputable sources (universities, medical associations) with your commentary.</p>
+                            </div>
+                        </div>
+                        <div class="ref-item">
+                            <div class="ref-icon">👨‍⚕️</div>
+                            <div class="ref-text">
+                                <h4>Intro Videos (Optional)</h4>
+                                <p>Short videos where you personally explain topics. Creates connection and establishes your expertise.</p>
+                            </div>
+                        </div>
+                        <div class="ref-item">
+                            <div class="ref-icon">🔬</div>
+                            <div class="ref-text">
+                                <h4>Mechanism Animations</h4>
+                                <p>Animated videos explaining how medications work in the brain. Visual learners love these.</p>
+                            </div>
+                        </div>
+                        <div class="ref-item">
+                            <div class="ref-icon">📺</div>
+                            <div class="ref-text">
+                                <h4>AI-Generated Videos</h4>
+                                <p>Tools like Synthesia or HeyGen can create professional videos with AI presenters from your scripts.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="phase-card">
+                    <div class="phase-badge">📄 DOWNLOADABLE RESOURCES</div>
+                    <h3>PDFs, Worksheets & Printables</h3>
+                    <p>Some patients prefer printed materials. Offer downloadable resources they can review offline or share with family members.</p>
+
+                    <div class="ref-grid" style="margin-top: 24px;">
+                        <div class="ref-item">
+                            <div class="ref-icon">📋</div>
+                            <div class="ref-text">
+                                <h4>Symptom Trackers</h4>
+                                <p>Printable mood charts, sleep logs, and symptom diaries patients can fill out between appointments.</p>
+                            </div>
+                        </div>
+                        <div class="ref-item">
+                            <div class="ref-icon">📝</div>
+                            <div class="ref-text">
+                                <h4>Medication Cards</h4>
+                                <p>One-page summaries for each medication with key info: dosing, side effects, interactions, and what to report.</p>
+                            </div>
+                        </div>
+                        <div class="ref-item">
+                            <div class="ref-icon">👨‍👩‍👧</div>
+                            <div class="ref-text">
+                                <h4>Family Education Sheets</h4>
+                                <p>Resources designed for family members to understand their loved one's condition and how to help.</p>
+                            </div>
+                        </div>
+                        <div class="ref-item">
+                            <div class="ref-icon">🆘</div>
+                            <div class="ref-text">
+                                <h4>Crisis Resources</h4>
+                                <p>Printable crisis plans, emergency contacts, and warning sign checklists.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="phase-card">
+                    <div class="phase-badge">🔧 INTERACTIVE TOOLS</div>
+                    <h3>Calculators, Quizzes & Self-Assessments</h3>
+                    <p>Interactive tools engage patients actively rather than passively consuming content. They can provide personalized insights.</p>
+
+                    <div class="ref-grid" style="margin-top: 24px;">
+                        <div class="ref-item">
+                            <div class="ref-icon">📊</div>
+                            <div class="ref-text">
+                                <h4>Screening Questionnaires</h4>
+                                <p>PHQ-9, GAD-7, MDQ, and other validated screening tools patients can complete before appointments.</p>
+                            </div>
+                        </div>
+                        <div class="ref-item">
+                            <div class="ref-icon">💊</div>
+                            <div class="ref-text">
+                                <h4>Dosing Calculators</h4>
+                                <p>Tools to help patients understand their medication dosing (educational only, not prescriptive).</p>
+                            </div>
+                        </div>
+                        <div class="ref-item">
+                            <div class="ref-icon">❓</div>
+                            <div class="ref-text">
+                                <h4>FAQ Sections</h4>
+                                <p>Expandable Q&A sections addressing common patient questions about conditions and treatments.</p>
+                            </div>
+                        </div>
+                        <div class="ref-item">
+                            <div class="ref-icon">🎯</div>
+                            <div class="ref-text">
+                                <h4>Symptom Checkers</h4>
+                                <p>Guided tools to help patients articulate their symptoms before appointments.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="info-card">
+                    <h4>🏆 The Ultimate Goal: Comprehensive Patient Resource</h4>
+                    <p>By combining all these multimedia types, your website becomes a one-stop resource for psychiatric patient education. Patients can learn through their preferred format—reading presentations, listening to audio, watching videos, or using interactive tools. This comprehensive approach is what will make your site the best psychiatry information website on the planet.</p>
+                    <p><strong>Content Calendar Suggestion:</strong> Add one new presentation per week, one audio episode per month, and continuously refine existing content based on patient feedback.</p>
+                </div>
+            </section>
+
+            <!-- TOOLS & RESOURCES -->
+            <section class="section" id="tools">
+                <div class="section-header">
+                    <h2>Tools & Resources Quick Reference</h2>
+                    <p>Your complete technology stack with pricing, links, and what each tool does best.</p>
+                </div>
+
+                <div class="ref-grid">
+                    <div class="ref-item">
+                        <div class="ref-icon">🔬</div>
+                        <div class="ref-text">
+                            <h4>Perplexity Pro</h4>
+                            <p><strong>$20/month</strong> • AI research with citations • perplexity.ai</p>
+                        </div>
+                    </div>
+                    <div class="ref-item">
+                        <div class="ref-icon">🧠</div>
+                        <div class="ref-text">
+                            <h4>Claude Sonnet 4.5</h4>
+                            <p><strong>Via Perplexity</strong> • Best for treatment algorithms • Reasoning mode enabled</p>
+                        </div>
+                    </div>
+                    <div class="ref-item">
+                        <div class="ref-icon">🎨</div>
+                        <div class="ref-text">
+                            <h4>Gamma Pro</h4>
+                            <p><strong>$20/month</strong> • Web-native presentations • gamma.app</p>
+                        </div>
+                    </div>
+                    <div class="ref-item">
+                        <div class="ref-icon">🎙️</div>
+                        <div class="ref-text">
+                            <h4>NotebookLM</h4>
+                            <p><strong>Free</strong> • Audio "Deep Dive" podcasts • notebooklm.google.com</p>
+                        </div>
+                    </div>
+                    <div class="ref-item">
+                        <div class="ref-icon">🤖</div>
+                        <div class="ref-text">
+                            <h4>Claude.ai</h4>
+                            <p><strong>Your current tool</strong> • Verification & assistance • claude.ai</p>
+                        </div>
+                    </div>
+                    <div class="ref-item">
+                        <div class="ref-icon">🌐</div>
+                        <div class="ref-text">
+                            <h4>Emergent AI + Netlify</h4>
+                            <p><strong>Your website stack</strong> • Website building & hosting</p>
+                        </div>
+                    </div>
+                    <div class="ref-item">
+                        <div class="ref-icon">📊</div>
+                        <div class="ref-text">
+                            <h4>Figma</h4>
+                            <p><strong>Free tier</strong> • Interactive flowcharts & diagrams • figma.com</p>
+                        </div>
+                    </div>
+                    <div class="ref-item">
+                        <div class="ref-icon">👨‍⚕️</div>
+                        <div class="ref-text">
+                            <h4>Your 40+ Years of Expertise</h4>
+                            <p><strong>Priceless</strong> • The irreplaceable quality control layer</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="info-card" style="margin-top: 32px;">
+                    <h4>💰 Total Monthly Investment</h4>
+                    <p><strong>Perplexity Pro:</strong> $20/month</p>
+                    <p><strong>Gamma Pro:</strong> $20/month</p>
+                    <p><strong>NotebookLM:</strong> Free</p>
+                    <p><strong>Claude.ai:</strong> Included in your existing subscription</p>
+                    <p><strong>Emergent/Netlify:</strong> Your existing setup</p>
+                    <p style="margin-top: 16px; font-size: 1.2rem; color: var(--accent-primary-light);"><strong>Total: ~$40/month</strong> for the most accurate psychiatric research and presentation system available</p>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- Celebration Modal -->
+    <div class="celebration-modal" id="celebrationModal">
+        <div class="celebration-content">
+            <div class="celebration-icon" id="celebrationIcon">🎉</div>
+            <h2 id="celebrationTitle">Task Complete!</h2>
+            <p id="celebrationMessage">You're making incredible progress!</p>
+            <div class="xp-earned">
+                <span>+</span><span id="xpEarned">50</span><span> XP</span>
+            </div>
+            <button class="btn btn-primary" onclick="closeCelebration()">Continue Journey →</button>
+        </div>
+    </div>
+
+    <script>
+        // State Management
+        const state = {
+            completedTasks: JSON.parse(localStorage.getItem('completedTasksV2') || '[]'),
+            totalXp: parseInt(localStorage.getItem('totalXpV2') || '0'),
+            currentSection: localStorage.getItem('currentSectionV2') || 'dashboard'
+        };
+
+        const taskXp = {
+            '1-1': 75, '1-2': 100, '1-3': 150, '1-4': 100, '1-5': 125,
+            '2-1': 75, '2-2': 100, '2-3': 150, '2-4': 100, '2-5': 125,
+            '3-1': 100, '3-2': 125, '3-3': 150, '3-4': 100, '3-5': 175
+        };
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            updateUI();
+            initNavigation();
+            restoreCompletedTasks();
+            showSection(state.currentSection);
+        });
+
+        // Navigation
+        function initNavigation() {
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const section = item.dataset.section;
+                    if (section) {
+                        showSection(section);
+                    }
+                });
+            });
+        }
+
+        function showSection(sectionId) {
+            // Update nav items
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.classList.remove('active');
+                if (item.dataset.section === sectionId) {
+                    item.classList.add('active');
+                }
+            });
+
+            // Update sections
+            document.querySelectorAll('.section').forEach(section => {
+                section.classList.remove('active');
+            });
+
+            const targetSection = document.getElementById(sectionId);
+            if (targetSection) {
+                targetSection.classList.add('active');
+            }
+
+            state.currentSection = sectionId;
+            localStorage.setItem('currentSectionV2', sectionId);
+        }
+
+        // Toggle task details
+        function toggleDetails(taskId) {
+            const details = document.getElementById(`details-${taskId}`);
+            const btn = details.closest('.task-card').querySelector('.btn-secondary');
+
+            if (details.classList.contains('expanded')) {
+                details.classList.remove('expanded');
+                btn.innerHTML = '📖 Show Detailed Steps';
+            } else {
+                details.classList.add('expanded');
+                btn.innerHTML = '📕 Hide Steps';
+            }
+        }
+
+        // Complete task
+        function completeTask(taskId) {
+            if (state.completedTasks.includes(taskId)) return;
+
+            state.completedTasks.push(taskId);
+            const xp = taskXp[taskId] || 50;
+            state.totalXp += xp;
+
+            localStorage.setItem('completedTasksV2', JSON.stringify(state.completedTasks));
+            localStorage.setItem('totalXpV2', state.totalXp);
+
+            updateUI();
+            markTaskComplete(taskId);
+            showCelebration(taskId, xp);
+        }
+
+        function markTaskComplete(taskId) {
+            const card = document.querySelector(`.task-card[data-task="${taskId}"]`);
+            if (!card) return;
+
+            card.classList.add('completed');
+            const btn = card.querySelector('.btn-primary');
+            btn.innerHTML = '✓ Completed';
+            btn.classList.remove('btn-primary');
+            btn.classList.add('btn-complete');
+            btn.disabled = true;
+
+            // Update step number to checkmark
+            const stepNum = card.querySelector('.step-number');
+            stepNum.innerHTML = '✓';
+        }
+
+        function restoreCompletedTasks() {
+            state.completedTasks.forEach(taskId => {
+                markTaskComplete(taskId);
+            });
+        }
+
+        function updateUI() {
+            // Update XP
+            document.getElementById('totalXp').textContent = state.totalXp + ' XP';
+
+            // Update tasks completed
+            document.getElementById('tasksCompleted').textContent = state.completedTasks.length;
+
+            // Update overall progress
+            const totalTasks = 15;
+            const progress = (state.completedTasks.length / totalTasks) * 100;
+            document.getElementById('overallProgress').style.width = progress + '%';
+            document.getElementById('progressPercent').textContent = Math.round(progress) + '%';
+
+            // Update phase statuses
+            const phase1Tasks = ['1-1', '1-2', '1-3', '1-4', '1-5'];
+            const phase1Done = phase1Tasks.filter(t => state.completedTasks.includes(t)).length;
+            const phase1El = document.getElementById('phase1Status');
+            if (phase1El) phase1El.textContent = `${phase1Done}/5`;
+        }
+
+        function showCelebration(taskId, xp) {
+            const modal = document.getElementById('celebrationModal');
+            const icon = document.getElementById('celebrationIcon');
+            const title = document.getElementById('celebrationTitle');
+            const message = document.getElementById('celebrationMessage');
+            const xpEarned = document.getElementById('xpEarned');
+
+            const messages = [
+                "You're making incredible progress!",
+                "One step closer to excellence!",
+                "Your patients will thank you for this!",
+                "Building something unprecedented!",
+                "Keep going - you're on fire!",
+                "This is how legends are made!",
+                "Every step counts!",
+                "You're ahead of 99% of psychiatrists!"
+            ];
+
+            icon.textContent = '🎉';
+            title.textContent = 'Task Complete!';
+            message.textContent = messages[Math.floor(Math.random() * messages.length)];
+            xpEarned.textContent = xp;
+
+            modal.classList.add('show');
+        }
+
+        function closeCelebration() {
+            document.getElementById('celebrationModal').classList.remove('show');
+        }
+
+        // Reset progress (for testing)
+        function resetProgress() {
+            localStorage.removeItem('completedTasksV2');
+            localStorage.removeItem('totalXpV2');
+            localStorage.removeItem('currentSectionV2');
+            location.reload();
+        }
+    </script>
+</body>
+</html>
